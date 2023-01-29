@@ -24,12 +24,14 @@ jobs:
         run: |
           matrix=$(jq --arg key "${{ inputs.key }}" '.[$key]' ./.github/workflows/config/map.json)
           echo $matrix
-          echo "matrix={\"include\":$(echo $matrix)}" >> $GITHUB_OUTPUT
+          output="matrix={\"include\": {\"value\": $(echo $matrix)}}"
+          echo $output
+          echo $output >> $GITHUB_OUTPUT
 
   run_matrix:
     needs: setup_matrix
     runs-on: ${{ matrix.runs_on }}
     strategy:
-      matrix: ${{fromJson(needs.setup_matrix.outputs.matrix)}}
+      matrix: ${{ fromJson(needs.setup_matrix.outputs.matrix) }}
     steps:
-       - run: echo "Hello ${{ matrix.someValue }}"
+       - run: echo "Hello ${{ matrix.value }}"
