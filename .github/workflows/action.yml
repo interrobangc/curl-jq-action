@@ -1,0 +1,35 @@
+name: 'Dynamic Matrix From Yaml'
+on:
+  workflow_dispatch:
+    inputs:
+      key:
+        description: Map Key
+        default: example1
+        required: true
+        type: choice
+        options:
+          - example1
+          - example2
+          - example3
+
+jobs:
+  setup_matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - id: set-matrix
+        run: |
+          matrix=$(jq --arg key "$${{ inputs.key }}" '.[$key]' ./.github/workflows/config/map.json)
+          echo $matrix
+          echo "matrix={\"include\":$(echo $matrix)}" >> $GITHUB_OUTPUT
+
+  run_matrix:
+    needs: setup_matrix
+    runs-on: ${{ matrix.runs_on }}
+    strategy:
+      matrix: ${{fromJson(needs.setup_matrix.outputs.matrix)}}
+    steps:
+       - run: echo "Hello ${{ matrix.someValue }}"
