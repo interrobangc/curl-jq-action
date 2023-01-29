@@ -21,4 +21,5 @@ runs:
       run: |
         curl -s ${{ inputs.url }} > /tmp/target.json
         result=$(jq '${{ inputs.jq_query }}' /tmp/target.json)
+        echo $result
         echo "result=$(echo $result)" >> $GITHUB_OUTPUT
