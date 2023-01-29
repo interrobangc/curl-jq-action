@@ -26,6 +26,12 @@ jobs:
           echo $matrix
           echo "example_value_array=${matrix}"
 
+  echo:
+    needs: setup_matrix
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ toJSON(needs.setup_matrix.outputs.example) }}
+
   run_matrix:
     needs: setup_matrix
     runs-on: ${{ matrix.runs_on }}
