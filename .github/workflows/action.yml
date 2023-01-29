@@ -18,11 +18,10 @@ jobs:
     outputs:
       example_value_array: ${{ steps.set-matrix.outputs.example_value_array }}
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
       - id: set-matrix
         run: |
-          matrix=$(jq --arg key "${{ inputs.key }}" '.[$key]' ./.github/workflows/config/map.json)
+          curl -s https://raw.githubusercontent.com/interrobangc/curl-jq-action/${GITHUB_REF##*/}/.github/workflows/config/map.json > /tmp/map.json
+          matrix=$(jq --arg key "${{ inputs.key }}" '.[$key]' /tmp/map.json)
           echo $matrix
           echo "example_value_array=$(echo $matrix)" >> $GITHUB_OUTPUT
 
