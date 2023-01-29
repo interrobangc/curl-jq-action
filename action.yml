@@ -1,0 +1,24 @@
+name: 'curl and jq'
+description: 'Curl json from url and apply jq query'
+inputs:
+  url:
+    description: URL to fetch and apply JQ
+    required: true
+  jq_query:
+    description: Map Key
+    required: true
+
+outputs:
+  result:
+    description: Result of JQ query
+    value: ${{ steps.get-result.outputs.result }}
+
+runs:
+  using: composite
+  steps:
+    - id: get-result
+      shell: bash
+      run: |
+        curl -s ${{ inputs.url }} > /tmp/target.json
+        result=$(jq '{{ inputs.jq_query }}' /tmp/target.json)
+        echo "result=$(echo $result)" >> $GITHUB_OUTPUT
