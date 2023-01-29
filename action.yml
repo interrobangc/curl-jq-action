@@ -5,7 +5,7 @@ inputs:
     description: URL to fetch and apply JQ
     required: true
   jq_query:
-    description: Map Key
+    description: JQ query to apply
     required: true
 
 outputs:
@@ -20,5 +20,5 @@ runs:
       shell: bash
       run: |
         curl -s ${{ inputs.url }} > /tmp/target.json
-        result=$(jq '{{ inputs.jq_query }}' /tmp/target.json)
+        result=$(jq '${{ inputs.jq_query }}' /tmp/target.json)
         echo "result=$(echo $result)" >> $GITHUB_OUTPUT
