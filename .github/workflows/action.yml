@@ -16,7 +16,7 @@ jobs:
   setup_matrix:
     runs-on: ubuntu-latest
     outputs:
-      example: ${{ steps.set-matrix.outputs.example_value_array }}
+      example_value_array: ${{ steps.set-matrix.outputs.example_value_array }}
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -24,13 +24,13 @@ jobs:
         run: |
           matrix=$(jq --arg key "${{ inputs.key }}" '.[$key]' ./.github/workflows/config/map.json)
           echo $matrix
-          echo "example_value_array=${matrix}"
+          echo "example_value_array=${matrix}" >> $GITHUB_OUTPUT
 
   echo:
     needs: setup_matrix
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ toJSON(needs.setup_matrix.outputs.example) }}
+      - run: echo ${{ toJSON(needs.setup_matrix.outputs.example_value_array) }}
 
   run_matrix:
     needs: setup_matrix
