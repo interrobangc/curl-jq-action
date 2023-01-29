@@ -24,7 +24,7 @@ jobs:
         run: |
           matrix=$(jq --arg key "${{ inputs.key }}" '.[$key]' ./.github/workflows/config/map.json)
           echo $matrix
-          echo "example_value_array:$(echo $matrix)" >> $GITHUB_OUTPUT
+          echo "example_value_array=$(echo $matrix)" >> $GITHUB_OUTPUT
 
   echo:
     needs: setup_matrix
