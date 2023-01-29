@@ -25,7 +25,7 @@ jobs:
           jq_query: .${{ github.event.inputs.key }}
       - id: set-matrix
         run: |
-          echo "example_value_array=${{ steps.get-json.outputs.result.value" >> $GITHUB_OUTPUT
+          echo "example_value_array=${{ steps.get-json.outputs.result.value }}" >> $GITHUB_OUTPUT
 
   echo:
     needs: setup_matrix
