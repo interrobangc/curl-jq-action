@@ -26,9 +26,15 @@ jobs:
           echo $matrix
           echo "example_value_array=$(echo $matrix)" >> $GITHUB_OUTPUT
 
+  echo:
+    needs: setup_matrix
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ toJSON(needs.setup_matrix.outputs.example_value_array) }}
+
   run_matrix:
     needs: setup_matrix
-    runs-on: ${{ matrix.runs_on }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         example_value: ${{ fromJson(needs.setup_matrix.outputs.example_value_array) }}
