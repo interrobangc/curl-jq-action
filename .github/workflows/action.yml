@@ -18,7 +18,7 @@ jobs:
     outputs:
       example_value_array: ${{ steps.set-matrix.outputs.example_value_array }}
     steps:
-      - uses: interrobangc/curl-jq-action:main
+      - uses: interrobangc/curl-jq-action@main
         id: get-json
         with:
           url: https://raw.githubusercontent.com/interrobangc/curl-jq-action/main/map.json
